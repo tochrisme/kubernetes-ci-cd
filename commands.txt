@@ -1,0 +1,11 @@
+docker build -t 127.0.0.1:30400/hello-kenzan:latest  applications/hello-kenzan/
+
+//build the image for our proxy container:
+docker build -t socat-registry  applications/socat
+
+//run the proxy container
+docker stop socat-registry; docker rm socat-registry; 
+
+docker run -d -e "REG_IP=`minikube ip`" -e "REG_PORT=30400" --name socat-registry -p 30400:5000 socat-registry
+docker run -d -e "REG_IP=192.168.65.3" -e "REG_PORT=30400" --name socat-registry -p 30400:5000 socat-registry
+
